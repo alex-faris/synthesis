@@ -2,6 +2,7 @@
 #include <memory>
 
 #include <Engine/Graphics/EGLManager.hpp>
+#include <Engine/Graphics/Renderer.hpp>
 
 #if defined(_WIN32)
   #include <Engine/Window/Win32/Win32Window.hpp>
@@ -16,23 +17,43 @@ int main()
   if (!window->TryCreate())
   {
     window->Destroy();
+
     return -1;
   }
-
   std::cout << "Window creation OK!" << std::endl;
 
   Engine::EGLManager eglManager(*window);
   if (!eglManager.TryCreate())
   {
     eglManager.Destroy();
+    window->Destroy();
+
     return -1;
   }
+  std::cout << "EGL creation OK!" << std::endl;
 
-  std::cout << "EGL hook OK!" << std::endl;
+  Engine::Renderer renderer(eglManager);
+  if (!renderer.TryCreate())
+  {
+    renderer.Destroy();
+    eglManager.Destroy();
+    window->Destroy();
 
-  // Debug pause just to see if the window works
-  std::cin.get();
+    return -1;
+  }
+  std::cout << "Renderer creation OK!" << std::endl;
 
+  while (true)
+  {
+    static std::size_t i = 0;
+
+    renderer.Draw();
+    renderer.Update();
+
+    std::cout << i++ << std::endl;  // Still no event polling :]
+  }
+
+  renderer.Destroy();
   eglManager.Destroy();
   window->Destroy();
   return 0;

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Engine/Window/Window.hpp"
+#include <memory>
 
 #include <EGL/egl.h>
-#include <memory>
+
+#include "Engine/Window/Window.hpp"
 
 namespace Engine
 {
@@ -13,6 +14,10 @@ namespace Engine
     EGLManager(Engine::Window& window);
 
     bool TryCreate();
+    EGLDisplay GetDisplay() const;
+    EGLSurface GetSurface() const;
+    std::uint32_t GetSurfaceWidth() const;
+    std::uint32_t GetSurfaceHeight() const;
     void Destroy();
 
   private:
@@ -22,9 +27,10 @@ namespace Engine
     EGLContext m_Context;
     EGLSurface m_Surface;
 
-    bool InitDisplay();
-    bool InitConfig();
-    bool InitContext();
-    bool InitSurface();
+    bool CreateDisplay();
+    bool CreateConfig();
+    bool CreateContext();
+    bool CreateSurface();
+    bool InitRendering();
   };
 }  // namespace Engine

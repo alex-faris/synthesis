@@ -61,6 +61,16 @@ Engine::WindowHandle Engine::Win32Window::GetNativeHandle() const
   return m_Handle;
 }
 
+std::uint32_t Engine::Win32Window::GetNativeWidth() const
+{
+  return m_Width;
+}
+
+std::uint32_t Engine::Win32Window::GetNativeHeight() const
+{
+  return m_Height;
+}
+
 void Engine::Win32Window::Destroy()
 {
   if (m_Handle)

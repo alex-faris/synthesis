@@ -17,6 +17,8 @@ namespace Engine
     void Destroy();
 
     WindowHandle GetNativeHandle() const override;
+    std::uint32_t GetNativeWidth() const override;
+    std::uint32_t GetNativeHeight() const override;
 
   private:
     std::uint32_t m_Width;
