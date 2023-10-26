@@ -11,14 +11,16 @@ namespace Engine
   class Win32Window : public Window
   {
   public:
+    static Win32Window* s_Instance;
+
     Win32Window(int width, int height);
 
     bool TryCreate();
-    void Destroy();
-
+    void Update() override;
     WindowHandle GetNativeHandle() const override;
     std::uint32_t GetNativeWidth() const override;
     std::uint32_t GetNativeHeight() const override;
+    void Destroy();
 
   private:
     std::uint32_t m_Width;
@@ -29,5 +31,7 @@ namespace Engine
 
     bool InitWindowClass();
     bool InitWindowHandle();
+
+    static LRESULT CALLBACK WindowProc(HWND handle, UINT message, WPARAM w_param, LPARAM l_param);
   };
 }  // namespace Engine

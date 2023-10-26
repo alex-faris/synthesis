@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Engine::EGLManager::EGLManager(Engine::Window& window)
+Engine::EGLManager::EGLManager(Window* window)
     : m_Window(window), m_Display(EGL_NO_DISPLAY), m_Config(nullptr), m_Context(EGL_NO_CONTEXT),
       m_Surface(EGL_NO_SURFACE)
 {
@@ -55,12 +55,12 @@ EGLSurface Engine::EGLManager::GetSurface() const
 
 std::uint32_t Engine::EGLManager::GetSurfaceWidth() const
 {
-  return m_Window.GetNativeWidth();
+  return m_Window->GetNativeWidth();
 }
 
 std::uint32_t Engine::EGLManager::GetSurfaceHeight() const
 {
-  return m_Window.GetNativeHeight();
+  return m_Window->GetNativeHeight();
 }
 
 bool Engine::EGLManager::CreateDisplay()
@@ -113,7 +113,7 @@ bool Engine::EGLManager::CreateSurface()
   EGLSurface surface = EGL_NO_SURFACE;
 
 #if defined(_WIN32)
-  Engine::WindowHandle handle = m_Window.GetNativeHandle();
+  Engine::WindowHandle handle = m_Window->GetNativeHandle();
   surface = eglCreateWindowSurface(m_Display, m_Config, handle, nullptr);
 #else
   return false;

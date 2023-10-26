@@ -11,7 +11,7 @@ namespace Engine
   class EGLManager
   {
   public:
-    EGLManager(Engine::Window& window);
+    EGLManager(Window* window);
 
     bool TryCreate();
     EGLDisplay GetDisplay() const;
@@ -21,7 +21,7 @@ namespace Engine
     void Destroy();
 
   private:
-    Engine::Window& m_Window;
+    Window* m_Window;
     EGLDisplay m_Display;
     EGLConfig m_Config;
     EGLContext m_Context;

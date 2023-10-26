@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Engine::Renderer::Renderer(EGLManager& eglManager) : m_EGLManager(eglManager), m_VertexBuffer(0)
+Engine::Renderer::Renderer(EGLManager* eglManager) : m_EGL(eglManager), m_VertexBuffer(0)
 {
 }
 
@@ -27,7 +27,7 @@ void Engine::Renderer::Draw()
   glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  glViewport(0, 0, m_EGLManager.GetSurfaceWidth(), m_EGLManager.GetSurfaceHeight());
+  glViewport(0, 0, m_EGL->GetSurfaceWidth(), m_EGL->GetSurfaceHeight());
 
   glUseProgram(m_Shader.GetProgramID());
 
@@ -49,7 +49,7 @@ void Engine::Renderer::Draw()
 
 void Engine::Renderer::Update()
 {
-  eglSwapBuffers(m_EGLManager.GetDisplay(), m_EGLManager.GetSurface());
+  eglSwapBuffers(m_EGL->GetDisplay(), m_EGL->GetSurface());
 }
 
 void Engine::Renderer::SetupTriangle()
@@ -63,6 +63,10 @@ void Engine::Renderer::SetupTriangle()
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void Engine::Renderer::OnResize(std::uint32_t new_width, std::uint32_t new_height)
+{
+  glViewport(0, 0, new_width, new_height);
+}
 
 void Engine::Renderer::Destroy()
 {

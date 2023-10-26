@@ -1,6 +1,9 @@
 include_directories(.)
 
 add_executable(Game
+    "Game.hpp"
+
+    "Game.cpp"
 	"Main.cpp"
 )
 
