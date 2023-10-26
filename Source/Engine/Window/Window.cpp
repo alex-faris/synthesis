@@ -11,7 +11,7 @@ void Engine::Window::DestroyObserver(WindowObserver* observer)
                     m_Observers.end());
 }
 
-void Engine::Window::NotifyResize(std::uint32_t new_width, std::uint32_t new_height) const
+void Engine::Window::NotifyResize(u32 new_width, u32 new_height) const
 {
   for (WindowObserver* observer : m_Observers)
   {

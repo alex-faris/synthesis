@@ -2,7 +2,11 @@
 
 #include <iostream>
 
-Engine::Renderer::Renderer(EGLManager* eglManager) : m_EGL(eglManager), m_VertexBuffer(0)
+#include "Math/Matrix/Matrix4x4.hpp"
+
+
+Engine::Renderer::Renderer(EGLManager* eglManager)
+    : m_EGL(eglManager), m_VertexBuffer(0), m_Timer(), m_Angle(0.0F)
 {
 }
 
@@ -33,6 +37,14 @@ void Engine::Renderer::Draw()
 
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
 
+  Matrix4x4 rotation_matrix = Matrix4x4::SetYaw(m_Angle);
+  GLint rotation_matrix_uniform =
+  glGetUniformLocation(m_Shader.GetProgramID(), "u_rotation_matrix");
+  if (rotation_matrix_uniform != 1)
+  {
+    glUniformMatrix4fv(rotation_matrix_uniform, 1, GL_FALSE, rotation_matrix.GetData());
+  }
+
   GLint position_attribute = glGetAttribLocation(m_Shader.GetProgramID(), "in_position");
   if (position_attribute != -1)
   {
@@ -49,6 +61,9 @@ void Engine::Renderer::Draw()
 
 void Engine::Renderer::Update()
 {
+  m_Timer.Tick();
+  m_Angle += 0.01F;
+
   eglSwapBuffers(m_EGL->GetDisplay(), m_EGL->GetSurface());
 }
 
@@ -63,7 +78,7 @@ void Engine::Renderer::SetupTriangle()
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Engine::Renderer::OnResize(std::uint32_t new_width, std::uint32_t new_height)
+void Engine::Renderer::OnResize(u32 new_width, u32 new_height)
 {
   glViewport(0, 0, new_width, new_height);
 }

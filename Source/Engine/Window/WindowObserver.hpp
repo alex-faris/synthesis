@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include "Engine/Types.hpp"
 
 namespace Engine
 {
@@ -9,7 +9,7 @@ namespace Engine
   class WindowObserver
   {
   public:
-    virtual void OnResize(std::uint32_t new_width, std::uint32_t new_height);
+    virtual void OnResize(u32 new_width, u32 new_height);
     virtual void OnClose();
 
   private:

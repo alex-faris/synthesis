@@ -13,19 +13,19 @@ namespace Engine
   public:
     static Win32Window* s_Instance;
 
-    Win32Window(int width, int height);
+    Win32Window(u32 width, u32 height);
 
     bool TryCreate();
     void Update() override;
     WindowHandle GetNativeHandle() const override;
-    std::uint32_t GetNativeWidth() const override;
-    std::uint32_t GetNativeHeight() const override;
+    u32 GetNativeWidth() const override;
+    u32 GetNativeHeight() const override;
     void Destroy();
 
   private:
-    std::uint32_t m_Width;
-    std::uint32_t m_Height;
-    const wchar_t* m_kTitle;
+    u32 m_Width;
+    u32 m_Height;
+    const c16* m_kTitle;
     HINSTANCE m_Instance;
     HWND m_Handle;
 

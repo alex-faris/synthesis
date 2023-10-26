@@ -22,8 +22,8 @@ void Game::Game::Init()
 
   m_Renderer = std::make_unique<Engine::Renderer>(m_EGL.get());
   assert(m_Renderer->TryCreate());
-
   m_Window->CreateObserver(m_Renderer.get());
+
   m_IsRunning = true;
 }
 

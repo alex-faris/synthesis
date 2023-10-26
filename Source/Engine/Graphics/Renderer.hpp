@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Engine/Timer/Timer.hpp"
 #include "Engine/Window/WindowObserver.hpp"
 #include "Shader/Shader.hpp"
 
@@ -20,12 +21,14 @@ namespace Engine
     void Update();
     void Destroy();
 
-    void OnResize(std::uint32_t new_width, std::uint32_t new_height) override;
+    void OnResize(u32 new_width, u32 new_height) override;
 
   private:
     EGLManager* m_EGL;
     Shader m_Shader;
     GLuint m_VertexBuffer;
+    Timer m_Timer;
+    f32 m_Angle;
 
     void SetupTriangle();
   };

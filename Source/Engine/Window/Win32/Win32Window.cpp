@@ -7,7 +7,7 @@ namespace Engine
   Win32Window* Win32Window::s_Instance = nullptr;
 }  // namespace Engine
 
-Engine::Win32Window::Win32Window(int width, int height)
+Engine::Win32Window::Win32Window(u32 width, u32 height)
     : m_Width(width), m_Height(height), m_kTitle(nullptr), m_Instance(nullptr), m_Handle(nullptr)
 {
 }
@@ -81,8 +81,8 @@ LRESULT Engine::Win32Window::WindowProc(HWND handle, UINT message, WPARAM w_para
     {
       case WM_SIZE:
       {
-        uint32_t new_width = LOWORD(l_param);
-        uint32_t new_height = HIWORD(l_param);
+        u32 new_width = LOWORD(l_param);
+        u32 new_height = HIWORD(l_param);
         s_Instance->NotifyResize(new_width, new_height);
         break;
       }
@@ -110,12 +110,12 @@ Engine::WindowHandle Engine::Win32Window::GetNativeHandle() const
   return m_Handle;
 }
 
-std::uint32_t Engine::Win32Window::GetNativeWidth() const
+u32 Engine::Win32Window::GetNativeWidth() const
 {
   return m_Width;
 }
 
-std::uint32_t Engine::Win32Window::GetNativeHeight() const
+u32 Engine::Win32Window::GetNativeHeight() const
 {
   return m_Height;
 }
