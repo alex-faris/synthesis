@@ -9,7 +9,7 @@
 #include "FragmentShader.hpp"
 #include "VertexShader.hpp"
 
-Engine::Shader::Shader() : m_ShaderProgram(0)
+Engine::Shader::Shader() : mShaderProgram(0)
 {
 }
 
@@ -17,24 +17,24 @@ Engine::Shader::~Shader()
 {
 }
 
-bool Engine::Shader::TryCreate(const std::string& kVertexPath, const std::string& kFragmentPath)
+bool Engine::Shader::tryCreate(const std::string& kVertexPath, const std::string& kFragmentPath)
 {
-  std::string vertex_source = Engine::ReadFile(kVertexPath);
-  std::string fragment_source = Engine::ReadFile(kFragmentPath);
+  std::string vertex_source = Engine::readFile(kVertexPath);
+  std::string fragment_source = Engine::readFile(kFragmentPath);
 
   VertexShader vertex_shader;
-  if (!vertex_shader.TryCreate(vertex_source))
+  if (!vertex_shader.tryCreate(vertex_source))
   {
     return false;
   }
 
   FragmentShader fragment_shader;
-  if (!fragment_shader.TryCreate(fragment_source))
+  if (!fragment_shader.tryCreate(fragment_source))
   {
     return false;
   }
 
-  if (!LinkProgram(vertex_shader.GetID(), fragment_shader.GetID()))
+  if (!linkProgram(vertex_shader.getID(), fragment_shader.getID()))
   {
     std::cerr << "Failed to link shaders!" << std::endl;
     return false;
@@ -43,17 +43,17 @@ bool Engine::Shader::TryCreate(const std::string& kVertexPath, const std::string
   return true;
 }
 
-void Engine::Shader::Use()
+void Engine::Shader::use()
 {
-  glUseProgram(m_ShaderProgram);
+  glUseProgram(mShaderProgram);
 }
 
-GLuint Engine::Shader::GetProgramID() const
+GLuint Engine::Shader::getProgramID() const
 {
-  return m_ShaderProgram;
+  return mShaderProgram;
 }
 
-bool Engine::Shader::CompileShader(const std::string& kSource, GLenum shader_type, GLuint& shader)
+bool Engine::Shader::compileShader(const std::string& kSource, GLenum shader_type, GLuint& shader)
 {
   shader = glCreateShader(shader_type);
   const char* kSrc = kSource.c_str();
@@ -74,19 +74,19 @@ bool Engine::Shader::CompileShader(const std::string& kSource, GLenum shader_typ
   return true;
 }
 
-bool Engine::Shader::LinkProgram(GLuint vertex_shader, GLuint fragment_shader)
+bool Engine::Shader::linkProgram(GLuint vertex_shader, GLuint fragment_shader)
 {
-  m_ShaderProgram = glCreateProgram();
-  glAttachShader(m_ShaderProgram, vertex_shader);
-  glAttachShader(m_ShaderProgram, fragment_shader);
-  glLinkProgram(m_ShaderProgram);
+  mShaderProgram = glCreateProgram();
+  glAttachShader(mShaderProgram, vertex_shader);
+  glAttachShader(mShaderProgram, fragment_shader);
+  glLinkProgram(mShaderProgram);
 
   GLint success;
-  glGetProgramiv(m_ShaderProgram, GL_LINK_STATUS, &success);
+  glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &success);
   if (!success)
   {
     char info_log[512];
-    glGetProgramInfoLog(m_ShaderProgram, sizeof(info_log - 1), nullptr, info_log);
+    glGetProgramInfoLog(mShaderProgram, sizeof(info_log - 1), nullptr, info_log);
 
     std::cerr << "Failed to link shader program!" << std::endl;
     return false;
@@ -95,10 +95,10 @@ bool Engine::Shader::LinkProgram(GLuint vertex_shader, GLuint fragment_shader)
   return true;
 }
 
-void Engine::Shader::Destroy()
+void Engine::Shader::destroy()
 {
-  if (m_ShaderProgram != 0)
+  if (mShaderProgram != 0)
   {
-    glDeleteProgram(m_ShaderProgram);
+    glDeleteProgram(mShaderProgram);
   }
 }

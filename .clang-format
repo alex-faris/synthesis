@@ -39,7 +39,7 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^<[^\\/>]+(\.h)?>$'
     Priority: 1
-  - Regex: '^<(EGL|GLES3)/[^>]*>$'
+  - Regex: '^<(stb|EGL|GLES3)/[^>]*>$'
     Priority: 2
   - Regex: '^<[^>]*\/[^>]*>$'
     Priority: 3

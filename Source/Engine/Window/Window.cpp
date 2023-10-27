@@ -1,28 +1,28 @@
 #include "Window.hpp"
 
-void Engine::Window::CreateObserver(WindowObserver* observer)
+void Engine::Window::createObserver(WindowObserver* observer)
 {
-  m_Observers.push_back(observer);
+  mObservers.push_back(observer);
 }
 
-void Engine::Window::DestroyObserver(WindowObserver* observer)
+void Engine::Window::destroyObserver(WindowObserver* observer)
 {
-  m_Observers.erase(std::remove(m_Observers.begin(), m_Observers.end(), observer),
-                    m_Observers.end());
+  mObservers.erase(std::remove(mObservers.begin(), mObservers.end(), observer),
+                    mObservers.end());
 }
 
-void Engine::Window::NotifyResize(u32 new_width, u32 new_height) const
+void Engine::Window::notifyResize(u32 new_width, u32 new_height) const
 {
-  for (WindowObserver* observer : m_Observers)
+  for (WindowObserver* observer : mObservers)
   {
-    observer->OnResize(new_width, new_height);
+    observer->onResize(new_width, new_height);
   }
 }
 
-void Engine::Window::NotifyClose()
+void Engine::Window::notifyClose()
 {
-  for (WindowObserver* observer : m_Observers)
+  for (WindowObserver* observer : mObservers)
   {
-    observer->OnClose();
+    observer->onClose();
   }
 }

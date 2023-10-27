@@ -4,5 +4,5 @@
 
 namespace Engine
 {
-  std::string ReadFile(const std::string& kFilePath);
+  std::string readFile(const std::string& filePath);
 }

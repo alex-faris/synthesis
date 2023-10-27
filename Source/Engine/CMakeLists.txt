@@ -3,11 +3,12 @@
 add_library(Engine STATIC
 	"Graphics/EGLManager.hpp"
 	"Graphics/Renderer.hpp"
+	"Graphics/Math/Matrix/Matrix.hpp"
+	"Graphics/Math/Matrix/Matrix4x4.hpp"
 	"Graphics/Shader/Shader.hpp"
 	"Graphics/Shader/VertexShader.hpp" 
 	"Graphics/Shader/FragmentShader.hpp"
-	"Graphics/Math/Matrix/Matrix.hpp"
-	"Graphics/Math/Matrix/Matrix4x4.hpp"
+	"Graphics/Texture/Texture.hpp"
 	"Timer/Timer.hpp"
 	"Window/WindowObserver.hpp"
 	"Window/Window.hpp"
@@ -18,10 +19,11 @@ add_library(Engine STATIC
 
 	"Graphics/EGLManager.cpp"
 	"Graphics/Renderer.cpp"
+	"Graphics/Math/Matrix/Matrix4x4.cpp"
 	"Graphics/Shader/Shader.cpp"
 	"Graphics/Shader/VertexShader.cpp" 
 	"Graphics/Shader/FragmentShader.cpp"
-	"Graphics/Math/Matrix/Matrix4x4.cpp"
+	"Graphics/Texture/Texture.cpp"
 	"Timer/Timer.cpp"
 	"Window/WindowObserver.cpp"
 	"Window/Window.cpp"
@@ -47,5 +49,7 @@ if(WIN32)
 endif()
 
 target_link_libraries(Engine PUBLIC egl)
-target_link_libraries(Engine PUBLIC gles3)
+target_link_libraries(Engine PUBLIC opengl)
+target_link_libraries(Engine PUBLIC stb)
+
 create_target_directory_groups("Engine")

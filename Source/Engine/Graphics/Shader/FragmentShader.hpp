@@ -12,11 +12,11 @@ namespace Engine
     FragmentShader();
     ~FragmentShader();
 
-    bool TryCreate(const std::string& kSource);
-    GLuint GetID() const;
-    void Destroy();
+    bool tryCreate(const std::string& sourceCode);
+    GLuint getID() const;
+    void destroy();
 
   private:
-    GLuint m_ShaderID;
+    GLuint mShaderID;
   };
 }  // namespace Engine

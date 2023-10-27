@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Engine::VertexShader::VertexShader() : m_ShaderID(0)
+Engine::VertexShader::VertexShader() : mShaderID(0)
 {
 }
 
@@ -10,7 +10,7 @@ Engine::VertexShader::~VertexShader()
 {
 }
 
-bool Engine::VertexShader::TryCreate(const std::string& kSource)
+bool Engine::VertexShader::tryCreate(const std::string& kSource)
 {
   GLuint shader = glCreateShader(GL_VERTEX_SHADER);
   const char* kSrc = kSource.c_str();
@@ -28,16 +28,16 @@ bool Engine::VertexShader::TryCreate(const std::string& kSource)
     return false;
   }
 
-  m_ShaderID = shader;
+  mShaderID = shader;
   return true;
 }
 
-GLuint Engine::VertexShader::GetID() const
+GLuint Engine::VertexShader::getID() const
 {
-  return m_ShaderID;
+  return mShaderID;
 }
 
-void Engine::VertexShader::Destroy()
+void Engine::VertexShader::destroy()
 {
-  glDeleteShader(m_ShaderID);
+  glDeleteShader(mShaderID);
 }

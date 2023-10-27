@@ -8,9 +8,9 @@ int main()
   {
     Game::Game game;
 
-    game.Init();
-    game.Run();
-    game.Shutdown();
+    game.init();
+    game.run();
+    game.shutdown();
   }
   catch (const std::exception& kException)
   {

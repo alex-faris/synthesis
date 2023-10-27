@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Engine::FragmentShader::FragmentShader() : m_ShaderID(0)
+Engine::FragmentShader::FragmentShader() : mShaderID(0)
 {
 }
 
@@ -11,7 +11,7 @@ Engine::FragmentShader::~FragmentShader()
 {
 }
 
-bool Engine::FragmentShader::TryCreate(const std::string& kSource)
+bool Engine::FragmentShader::tryCreate(const std::string& kSource)
 {
   GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
   const char* kSrc = kSource.c_str();
@@ -29,16 +29,16 @@ bool Engine::FragmentShader::TryCreate(const std::string& kSource)
     return false;
   }
 
-  m_ShaderID = shader;
+  mShaderID = shader;
   return true;
 }
 
-GLuint Engine::FragmentShader::GetID() const
+GLuint Engine::FragmentShader::getID() const
 {
-  return m_ShaderID;
+  return mShaderID;
 }
 
-void Engine::FragmentShader::Destroy()
+void Engine::FragmentShader::destroy()
 {
-  glDeleteShader(m_ShaderID);
+  glDeleteShader(mShaderID);
 }

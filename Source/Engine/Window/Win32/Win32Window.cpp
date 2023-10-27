@@ -4,23 +4,23 @@
 
 namespace Engine
 {
-  Win32Window* Win32Window::s_Instance = nullptr;
+  Win32Window* Win32Window::sInstance = nullptr;
 }  // namespace Engine
 
 Engine::Win32Window::Win32Window(u32 width, u32 height)
-    : m_Width(width), m_Height(height), m_kTitle(nullptr), m_Instance(nullptr), m_Handle(nullptr)
+    : mWidth(width), mHeight(height), m_kTitle(nullptr), m_Instance(nullptr), m_Handle(nullptr)
 {
 }
 
-bool Engine::Win32Window::TryCreate()
+bool Engine::Win32Window::tryCreate()
 {
-  if (!InitWindowClass())
+  if (!createWindowClass())
   {
     std::cerr << "Failed to initialize Win32 window class!" << std::endl;
     return false;
   }
 
-  if (!InitWindowHandle())
+  if (!createWindowHandle())
   {
     std::cerr << "Failed to initialize Win32 window handle!" << std::endl;
     return false;
@@ -30,14 +30,14 @@ bool Engine::Win32Window::TryCreate()
   return true;
 }
 
-bool Engine::Win32Window::InitWindowClass()
+bool Engine::Win32Window::createWindowClass()
 {
   m_kTitle = L"Synthesis";
 
   WNDCLASSEXW window_class = {};
   window_class.cbSize = sizeof(window_class);
   window_class.style = CS_OWNDC;
-  window_class.lpfnWndProc = WindowProc;
+  window_class.lpfnWndProc = winProc;
   window_class.hInstance = m_Instance;
   window_class.lpszClassName = m_kTitle;
 
@@ -46,14 +46,14 @@ bool Engine::Win32Window::InitWindowClass()
     return false;
   }
 
-  s_Instance = this;
+  sInstance = this;
   return true;
 }
 
-bool Engine::Win32Window::InitWindowHandle()
+bool Engine::Win32Window::createWindowHandle()
 {
   m_Handle = CreateWindowW(m_kTitle, m_kTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-                           m_Width, m_Height, nullptr, nullptr, m_Instance, nullptr);
+                           mWidth, mHeight, nullptr, nullptr, m_Instance, nullptr);
 
   if (!m_Handle)
   {
@@ -63,7 +63,7 @@ bool Engine::Win32Window::InitWindowHandle()
   return true;
 }
 
-void Engine::Win32Window::Update()
+void Engine::Win32Window::update()
 {
   MSG msg;
   while (PeekMessageW(&msg, m_Handle, 0, 0, PM_REMOVE))
@@ -73,9 +73,9 @@ void Engine::Win32Window::Update()
   }
 }
 
-LRESULT Engine::Win32Window::WindowProc(HWND handle, UINT message, WPARAM w_param, LPARAM l_param)
+LRESULT Engine::Win32Window::winProc(HWND handle, UINT message, WPARAM w_param, LPARAM l_param)
 {
-  if (s_Instance)
+  if (sInstance)
   {
     switch (message)
     {
@@ -83,14 +83,14 @@ LRESULT Engine::Win32Window::WindowProc(HWND handle, UINT message, WPARAM w_para
       {
         u32 new_width = LOWORD(l_param);
         u32 new_height = HIWORD(l_param);
-        s_Instance->NotifyResize(new_width, new_height);
+        sInstance->notifyResize(new_width, new_height);
         break;
       }
 
       case WM_CLOSE:
       {
-        s_Instance->NotifyClose();
-        s_Instance->Destroy();
+        sInstance->notifyClose();
+        sInstance->destroy();
         return 0;
       }
 
@@ -105,22 +105,22 @@ LRESULT Engine::Win32Window::WindowProc(HWND handle, UINT message, WPARAM w_para
   return DefWindowProcW(handle, message, w_param, l_param);
 }
 
-Engine::WindowHandle Engine::Win32Window::GetNativeHandle() const
+Engine::WindowHandle Engine::Win32Window::getHandle() const
 {
   return m_Handle;
 }
 
-u32 Engine::Win32Window::GetNativeWidth() const
+u32 Engine::Win32Window::getWidth() const
 {
-  return m_Width;
+  return mWidth;
 }
 
-u32 Engine::Win32Window::GetNativeHeight() const
+u32 Engine::Win32Window::getHeight() const
 {
-  return m_Height;
+  return mHeight;
 }
 
-void Engine::Win32Window::Destroy()
+void Engine::Win32Window::destroy()
 {
   if (m_Handle)
   {

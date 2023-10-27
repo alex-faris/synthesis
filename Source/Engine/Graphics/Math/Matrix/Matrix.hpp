@@ -6,66 +6,66 @@
 
 namespace Engine
 {
-  template<u32 rows, u32 columns> class Matrix
+  template<u32 rows, u32 cols> class Matrix
   {
   public:
-    Matrix() : m_Data(rows * columns, 0.0F)
+    Matrix() : mData(rows * cols, 0.0F)
     {
     }
 
     f32& operator()(u32 row, u32 column)
     {
-      return m_Data[row * columns + column];
+      return mData[row * cols + column];
     }
 
     const f32& operator()(u32 row, u32 column) const
     {
-      return m_Data[row * columns + column];
+      return mData[row * cols + column];
     }
 
-    Matrix operator+(const Matrix& kOther) const
+    Matrix operator+(const Matrix& other) const
     {
-      Matrix<rows, columns> sum;
+      Matrix<rows, cols> sum;
 
       for (u32 i = 0; i < rows; ++i)
       {
-        for (u32 j = 0; j < columns; ++j)
+        for (u32 j = 0; j < cols; ++j)
         {
-          sum(i, j) = (*this)(i, j) + kOther(i, j);
+          sum(i, j) = (*this)(i, j) + other(i, j);
         }
       }
 
       return sum;
     }
 
-    Matrix operator-(const Matrix& kOther) const
+    Matrix operator-(const Matrix& other) const
     {
-      Matrix<rows, columns> difference;
+      Matrix<rows, cols> difference;
 
       for (u32 i = 0; i < rows; ++i)
       {
-        for (u32 j = 0; j < columns; ++j)
+        for (u32 j = 0; j < cols; ++j)
         {
-          difference(i, j) = (*this)(i, j) - kOther(i, j);
+          difference(i, j) = (*this)(i, j) - other(i, j);
         }
       }
 
       return difference;
     }
 
-    template<u32 result_columns, u32 common_dimension>
-    Matrix operator*(const Matrix<common_dimension, result_columns>& kOtherA) const
+    template<u32 resultCols, u32 commonDimension>
+    Matrix operator*(const Matrix<commonDimension, resultCols>& other) const
     {
-      Matrix<rows, result_columns> product;
+      Matrix<rows, resultCols> product;
 
       for (u32 i = 0; i < rows; ++i)
       {
-        for (u32 j = 0; j < result_columns; ++j)
+        for (u32 j = 0; j < resultCols; ++j)
         {
           product(i, j) = 0;
-          for (u32 k = 0; k < common_dimension; ++k)
+          for (u32 k = 0; k < commonDimension; ++k)
           {
-            product(i, j) += (*this)(i, k) * kOtherA(k, j);
+            product(i, j) += (*this)(i, k) * other(k, j);
           }
         }
       }
@@ -73,12 +73,12 @@ namespace Engine
       return product;
     }
 
-    const f32* GetData() const
+    const f32* getData() const
     {
-      return m_Data.data();
+      return mData.data();
     }
 
   protected:
-    std::vector<f32> m_Data;
+    std::vector<f32> mData;
   };
 }  // namespace Engine

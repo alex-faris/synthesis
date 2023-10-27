@@ -9,8 +9,8 @@ namespace Engine
   class WindowObserver
   {
   public:
-    virtual void OnResize(u32 new_width, u32 new_height);
-    virtual void OnClose();
+    virtual void onResize(u32 newWidth, u32 newHeight);
+    virtual void onClose();
 
   private:
   };

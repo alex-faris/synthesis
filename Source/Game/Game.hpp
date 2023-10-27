@@ -14,15 +14,15 @@ namespace Game
     Game();
     ~Game();
 
-    void Init();
-    void Run();
-    void OnClose() override;
-    void Shutdown();
+    void init();
+    void run();
+    void onClose() override;
+    void shutdown();
 
   private:
-    bool m_IsRunning;
-    std::unique_ptr<Engine::Win32Window> m_Window;
-    std::unique_ptr<Engine::EGLManager> m_EGL;
+    bool mIsRunning;
+    std::unique_ptr<Engine::Win32Window> mWindow;
+    std::unique_ptr<Engine::EGLManager> mEGL;
     std::unique_ptr<Engine::Renderer> m_Renderer;
   };
 }  // namespace Game

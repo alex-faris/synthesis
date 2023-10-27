@@ -3,7 +3,7 @@
 #include <cassert>
 #include <iostream>
 
-Game::Game::Game() : m_IsRunning(false), m_Window(nullptr), m_EGL(nullptr), m_Renderer(nullptr)
+Game::Game::Game() : mIsRunning(false), mWindow(nullptr), mEGL(nullptr), m_Renderer(nullptr)
 {
 }
 
@@ -11,40 +11,40 @@ Game::Game::~Game()
 {
 }
 
-void Game::Game::Init()
+void Game::Game::init()
 {
-  m_Window = std::make_unique<Engine::Win32Window>(1280, 720);
-  assert(m_Window->TryCreate());
-  m_Window->CreateObserver(this);
+  mWindow = std::make_unique<Engine::Win32Window>(1280, 720);
+  assert(mWindow->tryCreate());
+  mWindow->createObserver(this);
 
-  m_EGL = std::make_unique<Engine::EGLManager>(m_Window.get());
-  assert(m_EGL->TryCreate());
+  mEGL = std::make_unique<Engine::EGLManager>(mWindow.get());
+  assert(mEGL->tryCreate());
 
-  m_Renderer = std::make_unique<Engine::Renderer>(m_EGL.get());
-  assert(m_Renderer->TryCreate());
-  m_Window->CreateObserver(m_Renderer.get());
+  m_Renderer = std::make_unique<Engine::Renderer>(mEGL.get());
+  assert(m_Renderer->tryCreate());
+  mWindow->createObserver(m_Renderer.get());
 
-  m_IsRunning = true;
+  mIsRunning = true;
 }
 
-void Game::Game::Run()
+void Game::Game::run()
 {
-  while (m_IsRunning)
+  while (mIsRunning)
   {
-    m_Renderer->Draw();
-    m_Window->Update();
-    m_Renderer->Update();
+    m_Renderer->draw();
+    mWindow->update();
+    m_Renderer->update();
   }
 }
 
-void Game::Game::OnClose()
+void Game::Game::onClose()
 {
-  m_IsRunning = false;
+  mIsRunning = false;
 }
 
-void Game::Game::Shutdown()
+void Game::Game::shutdown()
 {
-  m_Renderer->Destroy();
-  m_EGL->Destroy();
-  m_Window->Destroy();
+  m_Renderer->destroy();
+  mEGL->destroy();
+  mWindow->destroy();
 }

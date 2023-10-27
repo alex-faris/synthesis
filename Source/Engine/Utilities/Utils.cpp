@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-std::string Engine::ReadFile(const std::string& kFilePath)
+std::string Engine::readFile(const std::string& kFilePath)
 {
   std::ifstream file(kFilePath);
   if (!file.is_open())

@@ -12,15 +12,15 @@ namespace Engine
     Shader();
     ~Shader();
 
-    bool TryCreate(const std::string& kVertexPath, const std::string& kFragmentPath);
-    void Use();
-    GLuint GetProgramID() const;
-    void Destroy();
+    bool tryCreate(const std::string& vertexPath, const std::string& fragmentPath);
+    void use();
+    GLuint getProgramID() const;
+    void destroy();
 
   private:
-    GLuint m_ShaderProgram;
+    GLuint mShaderProgram;
 
-    bool CompileShader(const std::string& kSource, GLenum shader_type, GLuint& shader);
-    bool LinkProgram(GLuint vertex_shader, GLuint fragment_shader);
+    bool compileShader(const std::string& sourceCode, GLenum shaderType, GLuint& shader);
+    bool linkProgram(GLuint vertexShader, GLuint fragmentShader);
   };
 }  // namespace Engine

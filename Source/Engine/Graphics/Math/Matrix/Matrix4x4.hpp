@@ -8,11 +8,11 @@ namespace Engine
   {
   public:
     Matrix4x4();
-    Matrix4x4(const Matrix<4, 4>& kMatrix4);
+    Matrix4x4(const Matrix<4, 4>& matrix4x4);
 
-    static Matrix4x4 SetPitch(f32 angle);
-    static Matrix4x4 SetYaw(f32 angle);
-    static Matrix4x4 SetRoll(f32 angle);
-    static Matrix4x4 SetRotation(f32 x_angle, f32 y_angle, f32 z_angle);
+    static Matrix4x4 setPitch(f32 angle);
+    static Matrix4x4 setYaw(f32 angle);
+    static Matrix4x4 setRoll(f32 angle);
+    static Matrix4x4 setRotation(f32 xAngle, f32 yAngle, f32 zAngle);
   };
 }  // namespace Engine

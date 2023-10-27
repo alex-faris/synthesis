@@ -11,27 +11,27 @@ namespace Engine
   class Win32Window : public Window
   {
   public:
-    static Win32Window* s_Instance;
+    static Win32Window* sInstance;
 
     Win32Window(u32 width, u32 height);
 
-    bool TryCreate();
-    void Update() override;
-    WindowHandle GetNativeHandle() const override;
-    u32 GetNativeWidth() const override;
-    u32 GetNativeHeight() const override;
-    void Destroy();
+    bool tryCreate();
+    void update() override;
+    WindowHandle getHandle() const override;
+    u32 getWidth() const override;
+    u32 getHeight() const override;
+    void destroy();
 
   private:
-    u32 m_Width;
-    u32 m_Height;
+    u32 mWidth;
+    u32 mHeight;
     const c16* m_kTitle;
     HINSTANCE m_Instance;
     HWND m_Handle;
 
-    bool InitWindowClass();
-    bool InitWindowHandle();
+    bool createWindowClass();
+    bool createWindowHandle();
 
-    static LRESULT CALLBACK WindowProc(HWND handle, UINT message, WPARAM w_param, LPARAM l_param);
+    static LRESULT CALLBACK winProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
   };
 }  // namespace Engine

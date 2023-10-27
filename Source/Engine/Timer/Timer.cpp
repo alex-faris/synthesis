@@ -1,21 +1,21 @@
 #include "Timer.hpp"
 
 Engine::Timer::Timer()
-    : m_StartTimePoint(std::chrono::high_resolution_clock::now()),
-      m_LastTimePoint(m_StartTimePoint), m_DeltaTime(0.0), m_IsVSyncEnabled(true),
-      m_TargetFrameRate(60), m_TargetFrameDuration(1.0 / m_TargetFrameRate)
+    : mStartTimePoint(std::chrono::high_resolution_clock::now()), mLastTimePoint(mStartTimePoint),
+      mDeltaTime(0.0), mIsVSyncEnabled(true), mTargetFrameRate(60),
+      mTargetFrameRateDuration(1.0 / mTargetFrameRate)
 {
 }
 
-void Engine::Timer::Tick()
+void Engine::Timer::tick()
 {
   auto now = std::chrono::high_resolution_clock::now();
-  m_DeltaTime = std::chrono::duration<f64>(now - m_LastTimePoint).count();
-  m_LastTimePoint = now;
+  mDeltaTime = std::chrono::duration<f64>(now - mLastTimePoint).count();
+  mLastTimePoint = now;
 
-  if (m_IsVSyncEnabled)
+  if (mIsVSyncEnabled)
   {
-    while (GetTimeSinceLastTick() < m_TargetFrameDuration)
+    while (getTimeSinceLastTick() < mTargetFrameRateDuration)
     {
       // This function intentionally left blank
       // "Wait for it, wait for it, wait for it, wait..."
@@ -23,24 +23,24 @@ void Engine::Timer::Tick()
   }
 }
 
-f64 Engine::Timer::GetDeltaTime() const
+f64 Engine::Timer::getDeltaTime() const
 {
-  return m_DeltaTime;
+  return mDeltaTime;
 }
 
-void Engine::Timer::ToggleVSync()
+void Engine::Timer::toggleVSync()
 {
-  m_IsVSyncEnabled = !m_IsVSyncEnabled;
+  mIsVSyncEnabled = !mIsVSyncEnabled;
 }
 
-void Engine::Timer::SetTargetFrameRate(u8 rate)
+void Engine::Timer::setTargetFrameRate(u8 rate)
 {
-  m_TargetFrameRate = rate;
-  m_TargetFrameDuration = 1.0 / m_TargetFrameRate;
+  mTargetFrameRate = rate;
+  mTargetFrameRateDuration = 1.0 / mTargetFrameRate;
 }
 
-f64 Engine::Timer::GetTimeSinceLastTick() const
+f64 Engine::Timer::getTimeSinceLastTick() const
 {
-  return std::chrono::duration<f64>(std::chrono::high_resolution_clock::now() - m_LastTimePoint)
+  return std::chrono::duration<f64>(std::chrono::high_resolution_clock::now() - mLastTimePoint)
   .count();
 }

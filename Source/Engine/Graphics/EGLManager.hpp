@@ -13,24 +13,24 @@ namespace Engine
   public:
     EGLManager(Window* window);
 
-    bool TryCreate();
-    EGLDisplay GetDisplay() const;
-    EGLSurface GetSurface() const;
-    std::uint32_t GetSurfaceWidth() const;
-    std::uint32_t GetSurfaceHeight() const;
-    void Destroy();
+    bool tryCreate();
+    EGLDisplay getDisplay() const;
+    EGLSurface getSurface() const;
+    std::uint32_t getSurfaceWidth() const;
+    std::uint32_t getSurfaceHeight() const;
+    void destroy();
 
   private:
-    Window* m_Window;
-    EGLDisplay m_Display;
-    EGLConfig m_Config;
-    EGLContext m_Context;
-    EGLSurface m_Surface;
+    Window* mWindow;
+    EGLDisplay mDisplay;
+    EGLConfig mConfig;
+    EGLContext mContext;
+    EGLSurface mSurface;
 
-    bool CreateDisplay();
-    bool CreateConfig();
-    bool CreateContext();
-    bool CreateSurface();
-    bool InitRendering();
+    bool createDisplay();
+    bool createConfig();
+    bool createContext();
+    bool createSurface();
+    bool initRendering();
   };
 }  // namespace Engine

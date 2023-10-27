@@ -18,7 +18,7 @@ Engine::Matrix4x4::Matrix4x4(const Matrix<4, 4>& kMatrix4) : Matrix<4, 4>(kMatri
   }
 }
 
-Engine::Matrix4x4 Engine::Matrix4x4::SetPitch(f32 angle)
+Engine::Matrix4x4 Engine::Matrix4x4::setPitch(f32 angle)
 {
   Matrix4x4 rotation;
 
@@ -34,7 +34,7 @@ Engine::Matrix4x4 Engine::Matrix4x4::SetPitch(f32 angle)
   return rotation;
 }
 
-Engine::Matrix4x4 Engine::Matrix4x4::SetYaw(f32 angle)
+Engine::Matrix4x4 Engine::Matrix4x4::setYaw(f32 angle)
 {
   Matrix4x4 rotation;
 
@@ -50,7 +50,7 @@ Engine::Matrix4x4 Engine::Matrix4x4::SetYaw(f32 angle)
   return rotation;
 }
 
-Engine::Matrix4x4 Engine::Matrix4x4::SetRoll(f32 angle)
+Engine::Matrix4x4 Engine::Matrix4x4::setRoll(f32 angle)
 {
   Matrix4x4 rotation;
 
@@ -65,11 +65,11 @@ Engine::Matrix4x4 Engine::Matrix4x4::SetRoll(f32 angle)
   return rotation;
 }
 
-Engine::Matrix4x4 Engine::Matrix4x4::SetRotation(f32 pitch_angle, f32 yaw_angle, f32 roll_angle)
+Engine::Matrix4x4 Engine::Matrix4x4::setRotation(f32 pitch_angle, f32 yaw_angle, f32 roll_angle)
 {
-  Matrix4x4 pitch = SetPitch(pitch_angle);
-  Matrix4x4 yaw = SetYaw(yaw_angle);
-  Matrix4x4 roll = SetRoll(roll_angle);
+  Matrix4x4 pitch = setPitch(pitch_angle);
+  Matrix4x4 yaw = setYaw(yaw_angle);
+  Matrix4x4 roll = setRoll(roll_angle);
 
   return yaw * pitch * roll;
 }

@@ -6,7 +6,7 @@
 
 
 Engine::Renderer::Renderer(EGLManager* eglManager)
-    : m_EGL(eglManager), m_VertexBuffer(0), m_Timer(), m_Angle(0.0F)
+    : mEGL(eglManager), mVertexBuffer(0), mTimer(), mAngle(0.0F), mTexture()
 {
 }
 
@@ -14,76 +14,113 @@ Engine::Renderer::~Renderer()
 {
 }
 
-bool Engine::Renderer::TryCreate()
+bool Engine::Renderer::tryCreate()
 {
-  if (!m_Shader.TryCreate("Data/Shaders/TriangleVertex.glsl", "Data/Shaders/TriangleFragment.glsl"))
+  if (!mShader.tryCreate("Data/Shaders/TriangleVertex.glsl", "Data/Shaders/TriangleFragment.glsl"))
   {
-    std::cerr << "Failed to create renderer!" << std::endl;
     return false;
   }
 
-  SetupTriangle();
+  if (!mTexture.tryCreate("Data/Textures/Dummy.png"))
+  {
+    return false;
+  }
+
+  setupTriangle();
+  // setupSquare();
   return true;
 }
 
-void Engine::Renderer::Draw()
+void Engine::Renderer::draw()
 {
-  glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
+  mTexture.bind();
+
+  glClearColor(0.1F, 0.1F, 0.1F, 1.0F);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  glViewport(0, 0, m_EGL->GetSurfaceWidth(), m_EGL->GetSurfaceHeight());
+  glViewport(0, 0, mEGL->getSurfaceWidth(), mEGL->getSurfaceHeight());
 
-  glUseProgram(m_Shader.GetProgramID());
+  glUseProgram(mShader.getProgramID());
 
-  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 
-  Matrix4x4 rotation_matrix = Matrix4x4::SetYaw(m_Angle);
-  GLint rotation_matrix_uniform =
-  glGetUniformLocation(m_Shader.GetProgramID(), "u_rotation_matrix");
-  if (rotation_matrix_uniform != 1)
+  Matrix4x4 rot_mat = Matrix4x4::setYaw(0.0);
+  GLint rot_mat_u = glGetUniformLocation(mShader.getProgramID(), "u_rotation_matrix");
+  if (rot_mat_u != -1)
   {
-    glUniformMatrix4fv(rotation_matrix_uniform, 1, GL_FALSE, rotation_matrix.GetData());
+    glUniformMatrix4fv(rot_mat_u, 1, GL_FALSE, rot_mat.getData());
   }
 
-  GLint position_attribute = glGetAttribLocation(m_Shader.GetProgramID(), "in_position");
-  if (position_attribute != -1)
+  GLint pos_attr = glGetAttribLocation(mShader.getProgramID(), "in_position");
+  GLint tex_coords_attr = glGetAttribLocation(mShader.getProgramID(), "in_texture_coordinates");
+
+  if (pos_attr != -1 && tex_coords_attr != -1)
   {
-    glVertexAttribPointer(position_attribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
+    // Position
+    glVertexAttribPointer(pos_attr, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
                           static_cast<GLvoid*>(0));
-    glEnableVertexAttribArray(position_attribute);
+    glEnableVertexAttribArray(pos_attr);
+
+    // Texture coordinates
+    glVertexAttribPointer(tex_coords_attr, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
+                          reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(tex_coords_attr);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    glDisableVertexAttribArray(position_attribute);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(pos_attr);
+    glDisableVertexAttribArray(tex_coords_attr);
   }
-}
-
-void Engine::Renderer::Update()
-{
-  m_Timer.Tick();
-  m_Angle += 0.01F;
-
-  eglSwapBuffers(m_EGL->GetDisplay(), m_EGL->GetSurface());
-}
-
-void Engine::Renderer::SetupTriangle()
-{
-  GLfloat vertices[9] = {0.0F, 0.5F, 0.0F, 0.5F, -0.5F, 0.0F, -0.5F, -0.5F, 0.0F};
-
-  glGenBuffers(1, &m_VertexBuffer);
-  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Engine::Renderer::OnResize(u32 new_width, u32 new_height)
+void Engine::Renderer::update()
+{
+  mTimer.tick();
+  mAngle += 0.01F;
+
+  eglSwapBuffers(mEGL->getDisplay(), mEGL->getSurface());
+}
+
+void Engine::Renderer::setupTriangle()
+{
+  GLfloat vertices[15] = {
+  // Position         // Texture coordinates
+  0.0F,   1.0F,  0.0F, 0.5F, 1.0F,  // Top center
+  -0.55F, -1.0F, 0.0F, 0.0F, 0.0F,  // Bottom left
+  0.55F,  -1.0F, 0.0F, 1.0F, 0.0F,  // Bottom right
+  };
+
+  glGenBuffers(1, &mVertexBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+}
+
+void Engine::Renderer::setupSquare()
+{
+  GLfloat vertices[30] = {
+  // Position         // Texture coordinates
+  -0.55F, 1.0F,  0.0F, 0.0F, 1.0F,  // Top left
+  0.55F,  1.0F,  0.0F, 1.0F, 1.0F,  // Top right
+  -0.55F, -1.0F, 0.0F, 0.0F, 0.0F,  // Bottom left
+
+  -0.55F, -1.0F, 0.0F, 0.0F, 0.0F,  // Bottom left
+  0.55F,  1.0F,  0.0F, 1.0F, 1.0F,  // Top right
+  0.55F,  -1.0F, 0.0F, 1.0F, 0.0F,  // Bottom right
+  };
+
+  glGenBuffers(1, &mVertexBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+}
+
+void Engine::Renderer::onResize(u32 new_width, u32 new_height)
 {
   glViewport(0, 0, new_width, new_height);
 }
 
-void Engine::Renderer::Destroy()
+void Engine::Renderer::destroy()
 {
-  glDeleteBuffers(1, &m_VertexBuffer);
+  glDeleteBuffers(1, &mVertexBuffer);
 }

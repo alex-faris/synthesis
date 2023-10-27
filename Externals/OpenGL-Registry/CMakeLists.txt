@@ -1,2 +1,2 @@
-add_library(gles3 INTERFACE)
-target_include_directories(gles3 INTERFACE "OpenGL-Registry/api/")
+add_library(opengl INTERFACE)
+target_include_directories(opengl INTERFACE "OpenGL-Registry/api/")

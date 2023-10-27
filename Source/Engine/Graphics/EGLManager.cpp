@@ -3,38 +3,38 @@
 #include <iostream>
 
 Engine::EGLManager::EGLManager(Window* window)
-    : m_Window(window), m_Display(EGL_NO_DISPLAY), m_Config(nullptr), m_Context(EGL_NO_CONTEXT),
-      m_Surface(EGL_NO_SURFACE)
+    : mWindow(window), mDisplay(EGL_NO_DISPLAY), mConfig(nullptr), mContext(EGL_NO_CONTEXT),
+      mSurface(EGL_NO_SURFACE)
 {
 }
 
-bool Engine::EGLManager::TryCreate()
+bool Engine::EGLManager::tryCreate()
 {
-  if (!CreateDisplay())
+  if (!createDisplay())
   {
     std::cerr << "Failed to create EGL display!" << std::endl;
     return false;
   }
 
-  if (!CreateConfig())
+  if (!createConfig())
   {
     std::cerr << "Failed to create EGL configuration!" << std::endl;
     return false;
   }
 
-  if (!CreateContext())
+  if (!createContext())
   {
     std::cerr << "Failed to create EGL context!" << std::endl;
     return false;
   }
 
-  if (!CreateSurface())
+  if (!createSurface())
   {
     std::cerr << "Failed to create EGL surface!" << std::endl;
     return false;
   }
 
-  if (!InitRendering())
+  if (!initRendering())
   {
     std::cerr << "Failed to make EGL context current!" << std::endl;
     return false;
@@ -43,35 +43,35 @@ bool Engine::EGLManager::TryCreate()
   return true;
 }
 
-EGLDisplay Engine::EGLManager::GetDisplay() const
+EGLDisplay Engine::EGLManager::getDisplay() const
 {
-  return m_Display;
+  return mDisplay;
 }
 
-EGLSurface Engine::EGLManager::GetSurface() const
+EGLSurface Engine::EGLManager::getSurface() const
 {
-  return m_Surface;
+  return mSurface;
 }
 
-std::uint32_t Engine::EGLManager::GetSurfaceWidth() const
+std::uint32_t Engine::EGLManager::getSurfaceWidth() const
 {
-  return m_Window->GetNativeWidth();
+  return mWindow->getWidth();
 }
 
-std::uint32_t Engine::EGLManager::GetSurfaceHeight() const
+std::uint32_t Engine::EGLManager::getSurfaceHeight() const
 {
-  return m_Window->GetNativeHeight();
+  return mWindow->getHeight();
 }
 
-bool Engine::EGLManager::CreateDisplay()
+bool Engine::EGLManager::createDisplay()
 {
-  m_Display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-  if (m_Display == EGL_NO_DISPLAY)
+  mDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+  if (mDisplay == EGL_NO_DISPLAY)
   {
     return false;
   }
 
-  if (!eglInitialize(m_Display, nullptr, nullptr))
+  if (!eglInitialize(mDisplay, nullptr, nullptr))
   {
     return false;
   }
@@ -79,7 +79,7 @@ bool Engine::EGLManager::CreateDisplay()
   return true;
 }
 
-bool Engine::EGLManager::CreateConfig()
+bool Engine::EGLManager::createConfig()
 {
   EGLint num_configs;
   const EGLint kConfigAttributes[] = {EGL_RED_SIZE,   8, EGL_GREEN_SIZE,      8,
@@ -87,7 +87,7 @@ bool Engine::EGLManager::CreateConfig()
                                       EGL_DEPTH_SIZE, 8, EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
                                       EGL_NONE};
 
-  if (!eglChooseConfig(m_Display, kConfigAttributes, &m_Config, 1, &num_configs))
+  if (!eglChooseConfig(mDisplay, kConfigAttributes, &mConfig, 1, &num_configs))
   {
     return false;
   }
@@ -95,12 +95,12 @@ bool Engine::EGLManager::CreateConfig()
   return true;
 }
 
-bool Engine::EGLManager::CreateContext()
+bool Engine::EGLManager::createContext()
 {
   const EGLint kContextAttributes[] = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE};
 
-  m_Context = eglCreateContext(m_Display, m_Config, EGL_NO_CONTEXT, kContextAttributes);
-  if (m_Context == EGL_NO_CONTEXT)
+  mContext = eglCreateContext(mDisplay, mConfig, EGL_NO_CONTEXT, kContextAttributes);
+  if (mContext == EGL_NO_CONTEXT)
   {
     return false;
   }
@@ -108,19 +108,19 @@ bool Engine::EGLManager::CreateContext()
   return true;
 }
 
-bool Engine::EGLManager::CreateSurface()
+bool Engine::EGLManager::createSurface()
 {
   EGLSurface surface = EGL_NO_SURFACE;
 
 #if defined(_WIN32)
-  Engine::WindowHandle handle = m_Window->GetNativeHandle();
-  surface = eglCreateWindowSurface(m_Display, m_Config, handle, nullptr);
+  Engine::WindowHandle handle = mWindow->getHandle();
+  surface = eglCreateWindowSurface(mDisplay, mConfig, handle, nullptr);
 #else
   return false;
 #endif
 
-  m_Surface = surface;
-  if (m_Surface == EGL_NO_SURFACE)
+  mSurface = surface;
+  if (mSurface == EGL_NO_SURFACE)
   {
     return false;
   }
@@ -128,28 +128,28 @@ bool Engine::EGLManager::CreateSurface()
   return true;
 }
 
-bool Engine::EGLManager::InitRendering()
+bool Engine::EGLManager::initRendering()
 {
-  return eglMakeCurrent(m_Display, m_Surface, m_Surface, m_Context);
+  return eglMakeCurrent(mDisplay, mSurface, mSurface, mContext);
 }
 
-void Engine::EGLManager::Destroy()
+void Engine::EGLManager::destroy()
 {
-  if (m_Surface != EGL_NO_SURFACE)
+  if (mSurface != EGL_NO_SURFACE)
   {
-    eglDestroySurface(m_Display, m_Surface);
-    m_Surface = EGL_NO_SURFACE;
+    eglDestroySurface(mDisplay, mSurface);
+    mSurface = EGL_NO_SURFACE;
   }
 
-  if (m_Context != EGL_NO_CONTEXT)
+  if (mContext != EGL_NO_CONTEXT)
   {
-    eglDestroyContext(m_Display, m_Context);
-    m_Context = EGL_NO_CONTEXT;
+    eglDestroyContext(mDisplay, mContext);
+    mContext = EGL_NO_CONTEXT;
   }
 
-  if (m_Display != EGL_NO_DISPLAY)
+  if (mDisplay != EGL_NO_DISPLAY)
   {
-    eglTerminate(m_Display);
-    m_Display = EGL_NO_DISPLAY;
+    eglTerminate(mDisplay);
+    mDisplay = EGL_NO_DISPLAY;
   }
 }

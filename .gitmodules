@@ -4,3 +4,6 @@
 [submodule "OpenGL"]
 	path = Externals/OpenGL-Registry/OpenGL-Registry
 	url = https://github.com/KhronosGroup/OpenGL-Registry.git
+[submodule "Externals/stb/stb"]
+	path = Externals/stb/stb
+	url = https://github.com/nothings/stb.git

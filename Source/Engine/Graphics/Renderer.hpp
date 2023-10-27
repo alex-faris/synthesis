@@ -5,6 +5,7 @@
 #include "Engine/Timer/Timer.hpp"
 #include "Engine/Window/WindowObserver.hpp"
 #include "Shader/Shader.hpp"
+#include "Texture/Texture.hpp"
 
 #include "EGLManager.hpp"
 
@@ -16,20 +17,22 @@ namespace Engine
     Renderer(EGLManager* egl);
     ~Renderer();
 
-    bool TryCreate();
-    void Draw();
-    void Update();
-    void Destroy();
+    bool tryCreate();
+    void draw();
+    void update();
+    void destroy();
 
-    void OnResize(u32 new_width, u32 new_height) override;
+    void onResize(u32 newWidth, u32 newHeight) override;
 
   private:
-    EGLManager* m_EGL;
-    Shader m_Shader;
-    GLuint m_VertexBuffer;
-    Timer m_Timer;
-    f32 m_Angle;
+    EGLManager* mEGL;
+    Shader mShader;
+    GLuint mVertexBuffer;
+    Timer mTimer;
+    f32 mAngle;
+    Texture mTexture;
 
-    void SetupTriangle();
+    void setupTriangle();
+    void setupSquare();
   };
 }  // namespace Engine

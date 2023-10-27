@@ -18,19 +18,19 @@ namespace Engine
   public:
     virtual ~Window() = default;
 
-    virtual WindowHandle GetNativeHandle() const = 0;
-    virtual u32 GetNativeWidth() const = 0;
-    virtual u32 GetNativeHeight() const = 0;
-    virtual void Update() = 0;
+    virtual WindowHandle getHandle() const = 0;
+    virtual u32 getWidth() const = 0;
+    virtual u32 getHeight() const = 0;
+    virtual void update() = 0;
 
-    void CreateObserver(WindowObserver* observer);
-    void DestroyObserver(WindowObserver* observer);
+    void createObserver(WindowObserver* observer);
+    void destroyObserver(WindowObserver* observer);
 
   protected:
-    void NotifyResize(u32 new_width, u32 new_height) const;
-    void NotifyClose();
+    void notifyResize(u32 new_width, u32 new_height) const;
+    void notifyClose();
 
   private:
-    std::vector<WindowObserver*> m_Observers;
+    std::vector<WindowObserver*> mObservers;
   };
 }  // namespace Engine

@@ -11,19 +11,19 @@ namespace Engine
   public:
     Timer();
 
-    void Tick();
-    f64 GetDeltaTime() const;
-    void ToggleVSync();
-    void SetTargetFrameRate(u8 rate);
+    void tick();
+    f64 getDeltaTime() const;
+    void toggleVSync();
+    void setTargetFrameRate(u8 rate);
 
   private:
-    std::chrono::high_resolution_clock::time_point m_StartTimePoint;
-    std::chrono::high_resolution_clock::time_point m_LastTimePoint;
-    f64 m_DeltaTime;
-    b8 m_IsVSyncEnabled;
-    u8 m_TargetFrameRate;
-    f64 m_TargetFrameDuration;
+    std::chrono::high_resolution_clock::time_point mStartTimePoint;
+    std::chrono::high_resolution_clock::time_point mLastTimePoint;
+    f64 mDeltaTime;
+    b8 mIsVSyncEnabled;
+    u8 mTargetFrameRate;
+    f64 mTargetFrameRateDuration;
 
-    f64 GetTimeSinceLastTick() const;
+    f64 getTimeSinceLastTick() const;
   };
 }  // namespace Engine
